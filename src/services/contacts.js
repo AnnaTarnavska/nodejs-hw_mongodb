@@ -1,5 +1,5 @@
 import createHttpError from 'http-errors';
-import { ContactsBase } from './models/initMongoDB.js';
+import { ContactsBase } from '../models/initMongoDB.js';
 
 export const getContacts = async () => {
     const contacts = await ContactsBase.find();
