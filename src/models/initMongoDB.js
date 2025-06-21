@@ -31,4 +31,5 @@ const contactSchema = new Schema(
     { timestamps: true, }
 );
 
+
 export const ContactsBase = model('contacts', contactSchema);
