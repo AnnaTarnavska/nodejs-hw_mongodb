@@ -1,11 +1,35 @@
 import createHttpError from 'http-errors';
 import { ContactsBase } from '../models/initMongoDB.js';
+import { createPaginationMetadata } from '../utils/create-pagination-metadata.js';
 
-export const getContacts = async () => {
-    const contacts = await ContactsBase.find();
+export const getContacts = async ({page, perPage, sortOrder, sortBy, filters, }) => {
+    const offset = (page - 1) * perPage;
 
-    return contacts;
+    const contactFilterConditions = ContactsBase.find();
+    if (filters.contactType) {
+        contactFilterConditions.where('contactType').equals(filters.contactType);
+    }
+
+    if (typeof filters.isFavourite === 'boolean') {
+        contactFilterConditions.where('isFavourite').equals(filters.isFavourite);
+    }
+
+    const [contacts, contactsCount] = await Promise.all([
+        ContactsBase.find()
+            .merge(contactFilterConditions)
+            .skip(offset)
+            .limit(perPage)
+            .sort({
+            [sortBy]: sortOrder,
+        }),
+        ContactsBase.find().merge(contactFilterConditions).countDocuments(),
+    ]);
+
+    const metadata = createPaginationMetadata(page, perPage, contactsCount);
+
+    return {contacts, ...metadata};
 };
+
 export const getContactById = async (contactId) => {
     const contact = await ContactsBase.findById(contactId);
 
