@@ -10,10 +10,8 @@ export const initMongoConnection = async () => {
 
     try {
         await mongoose.connect(url);
-        // await mongoose.connection.db('contacts').command({ ping: 1 });
         console.log('Mongo connection successful!');
     } catch (error) {
         console.error('Mongo connection error', error);
     }
-        // process.exit(1);
 };

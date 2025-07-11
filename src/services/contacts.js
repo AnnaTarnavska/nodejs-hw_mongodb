@@ -14,6 +14,10 @@ export const getContacts = async ({page, perPage, sortOrder, sortBy, filters, })
         contactFilterConditions.where('isFavourite').equals(filters.isFavourite);
     }
 
+    if ( filters.userId) {
+        contactFilterConditions.where('userId').equals(filters.userId);
+    }
+
     const [contacts, contactsCount] = await Promise.all([
         ContactsBase.find()
             .merge(contactFilterConditions)
@@ -30,8 +34,8 @@ export const getContacts = async ({page, perPage, sortOrder, sortBy, filters, })
     return {contacts, ...metadata};
 };
 
-export const getContactById = async (contactId) => {
-    const contact = await ContactsBase.findById(contactId);
+export const getContactById = async (contactId, userId) => {
+    const contact = await ContactsBase.findById({_id: contactId, userId});
 
     if (!contact) {
         throw createHttpError(404, 'Contact with id ${contactId} not found');
@@ -45,20 +49,24 @@ export const createContact = async (payload) => {
     return contact;
 };
 
-export const updateContact = async (contactId, payload, options) => {
-    const result = await ContactsBase.findByIdAndUpdate(contactId, payload, {
+export const updateContact = async (contactId, payload, userId, options) => {
+    const result = await ContactsBase.findByIdAndUpdate({_id: contactId, userId}, payload, {
         ...options,
         new: true,
         includeResultMetadata: true,
         runValidators: true,
     });
-    if (!result.value) {
+    if (!result?.value) {
         throw createHttpError(404, 'Contact not found');
     }
 
     return {contact: result.value, isNew: !result.lastErrorObject.updatedExisting};
 };
 
-export const deleteContactById = async (contactId) => {
-    await ContactsBase.findByIdAndDelete(contactId);
+export const deleteContactById = async (contactId, userId) => {
+    const contact = await ContactsBase.findByIdAndDelete({ _id: contactId, userId });
+    if (!contact) {
+        throw createHttpError(404, 'Contact not found');
+    }
+    return contact;
 };

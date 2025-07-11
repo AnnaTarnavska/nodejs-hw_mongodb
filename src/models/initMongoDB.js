@@ -1,5 +1,6 @@
 
 import { model, Schema } from 'mongoose';
+import { User } from './User.js';
 
 const contactSchema = new Schema(
     {
@@ -27,8 +28,16 @@ const contactSchema = new Schema(
             default: 'personal',
             required: true,
         },
+        userId: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: User,
+          },
     },
-    { timestamps: true, }
+    {
+        timestamps: true,
+        versionKey: false,
+     }
 );
 
 

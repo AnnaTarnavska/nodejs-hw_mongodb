@@ -6,6 +6,8 @@ import contactsRouter from './routers/contacts.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { requestIdMiddleware } from './middlewares/requestIdMiddleware.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import cookieParser from 'cookie-parser';
+import authRouter from './routers/auth.js';
 
 const PORT = Number(getEnvVar('PORT', '3000'));
 
@@ -21,10 +23,13 @@ export const setupServer = () => {
     }),
     );
 
+    app.use(cookieParser());
+
     app.use(json());
 
     app.use(requestIdMiddleware);
     app.use(contactsRouter);
+    app.use(authRouter);
     app.use(errorHandler);
     app.use(notFoundHandler);
 
