@@ -35,7 +35,7 @@ export const getContacts = async ({page, perPage, sortOrder, sortBy, filters, })
 };
 
 export const getContactById = async (contactId, userId) => {
-    const contact = await ContactsBase.findById({_id: contactId, userId});
+    const contact = await ContactsBase.findOne({_id: contactId, userId});
 
     if (!contact) {
         throw createHttpError(404, 'Contact with id ${contactId} not found');
@@ -50,7 +50,7 @@ export const createContact = async (payload) => {
 };
 
 export const updateContact = async (contactId, payload, userId, options) => {
-    const result = await ContactsBase.findByIdAndUpdate({_id: contactId, userId}, payload, {
+    const result = await ContactsBase.findOneAndUpdate({_id: contactId, userId}, payload, {
         ...options,
         new: true,
         includeResultMetadata: true,
@@ -64,7 +64,7 @@ export const updateContact = async (contactId, payload, userId, options) => {
 };
 
 export const deleteContactById = async (contactId, userId) => {
-    const contact = await ContactsBase.findByIdAndDelete({ _id: contactId, userId });
+    const contact = await ContactsBase.findOneAndDelete({ _id: contactId, userId });
     if (!contact) {
         throw createHttpError(404, 'Contact not found');
     }

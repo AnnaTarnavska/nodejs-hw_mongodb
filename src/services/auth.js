@@ -74,7 +74,7 @@ export const refreshSession = async (sessionId, sessionToken) => {
         throw createHttpError(401, 'Session expired!');
     }
 
-    await Session.findByIdAndDelete(sessionId);
+    await Session.findOneAndDelete(sessionId);
 
     const newSession = await Session.create({
         ...createSession(),
