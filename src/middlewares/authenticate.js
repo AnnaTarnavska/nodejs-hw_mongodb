@@ -9,9 +9,10 @@ export const authenticate = async(req, res, next) => {
         throw createHttpError(401, 'Authorization token is missing!');
     }
 
-    const [bearer, token] = authHeader.split(' ');
+    const bearer = authHeader.split(' ')[0];
+    const token = authHeader.split(' ')[1];
 
-    if (!(bearer === 'Bearer' && typeof token === 'string')) {
+    if (bearer !== 'Bearer' || !token) {
         throw createHttpError(401, 'Auth token must be of type Bearer!');
     }
 
