@@ -1,4 +1,4 @@
-import { logoutUser, loginUser, registerUser, refreshSession } from "../services/auth.js";
+import { logoutUser, loginUser, registerUser, refreshSession, requestResetPwdEmail, resetPwd } from "../services/auth.js";
 
 
 const setupSessionCookies = (session, res) => {
@@ -65,4 +65,25 @@ export const refreshSessionController = async (req, res) => {
         },
     });
 
+};
+
+export const requestResetPwdEmailController = async (req, res) => {
+    const { email } = req.body;
+    await requestResetPwdEmail(email);
+
+    res.send({
+        status: 200,
+        message: 'Successfully send reset password email',
+        data: {},
+    });
+};
+
+export const resetPwdController = async (req, res) => {
+    await resetPwd(req.body);
+
+    res.send({
+        status: 200,
+        message: 'Successfully reset password',
+        data: {},
+    });
 };
