@@ -1,7 +1,7 @@
 import cloudinary from 'cloudinary';
 import createHttpError from 'http-errors';
 import fs from 'node:fs/promises';
-import { getEnvVar } from './getEnvVar';
+import { getEnvVar } from './getEnvVar.js';
 
 
 cloudinary.v2.config({

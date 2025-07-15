@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors';
-import { createContact, deleteContactById, getContactById, getContacts, updateContact, uploadContactsAvatar } from '../services/contacts.js';
+import { createContact, deleteContactById, getContactById, getContacts, updateContact } from '../services/contacts.js';
 import { parsePaginationParams, parseFilters, parseSortParams } from '../utils/parse-helpers.js';
+import { saveFile } from '../utils/save-file.js';
 
 
 export const getContactsController = async (req, res) => {
@@ -39,12 +40,17 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const createContactsController = async (req, res) => {
+    const photoUrl = req.file?.path || null;
+
     const contact = await createContact({
         ...req.body,
         userId: req.user._id,
+        photo: photoUrl
     });
 
-    return res.json({
+
+
+    return res.status(201).json({
         message: `Successfully created`,
         status: 201,
         data: contact,
@@ -52,7 +58,16 @@ export const createContactsController = async (req, res) => {
 };
 
 export const patchContactByIdController = async (req, res) => {
-    const {contactId} = req.params;
+    const { contactId } = req.params;
+
+    const updateData = {
+        ...req.body,
+    };
+    if (req.file) {
+        const photoUrl = await saveFile(req.file);
+        updateData.photo = photoUrl;
+    };
+
     const { contact } = await updateContact(contactId, req.body, req.user._id,
         {
             upsert: false,
@@ -60,17 +75,6 @@ export const patchContactByIdController = async (req, res) => {
 
     return res.json({
         message: `Successfully updated contact with id ${contactId}`,
-        status: 200,
-        data: contact,
-    });
-};
-
-export const uploadContactsAvatarController = async (req, res) => {
-    const { contactId } = req.params;
-    const contact = await uploadContactsAvatar(contactId, req.file);
-
-    return res.json({
-        message: `Successfully updated contact avatar with id ${contactId}`,
         status: 200,
         data: contact,
     });

@@ -1,5 +1,5 @@
 import createHttpError from "http-errors";
-import { getEnvVar } from "./getEnvVar";
+import { getEnvVar } from "./getEnvVar.js";
 import { saveFileToCloudinary } from "./save-file-to-cloudinary.js";
 import { saveFileToLocal } from "./save-file-to-local.js";
 

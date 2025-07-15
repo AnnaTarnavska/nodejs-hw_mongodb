@@ -1,6 +1,6 @@
 import { createTransport } from "nodemailer";
-import { getEnvVar } from "./getEnvVar";
 import createHttpError from "http-errors";
+import { getEnvVar } from "./getEnvVar.js";
 
 const mailClient = createTransport({
     host: getEnvVar('SMTP_HOST'),

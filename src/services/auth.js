@@ -3,12 +3,12 @@ import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Handlebars from 'handlebars';
+import fs from 'node:fs';
+import path from 'node:path';
 import { User } from '../models/User.js';
 import { Session } from '../models/Session.js';
 import { sendEmail } from "../utils/send-email.js";
 import { getEnvVar } from "../utils/getEnvVar.js";
-import fs from 'node:fs';
-import path from 'node:path';
 import { TEMPLATE_DIR } from '../constants/paths.js';
 
 
