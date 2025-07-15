@@ -73,7 +73,7 @@ export const requestResetPwdEmailController = async (req, res) => {
 
     res.send({
         status: 200,
-        message: 'Successfully send reset password email',
+        message: 'Reset password email has been successfully sent.',
         data: {},
     });
 };
@@ -83,7 +83,7 @@ export const resetPwdController = async (req, res) => {
 
     res.send({
         status: 200,
-        message: 'Successfully reset password',
+        message: 'Password has been successfully reset.',
         data: {},
     });
 };

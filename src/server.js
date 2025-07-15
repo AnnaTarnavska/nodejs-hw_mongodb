@@ -8,6 +8,7 @@ import { requestIdMiddleware } from './middlewares/requestIdMiddleware.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
 import authRouter from './routers/auth.js';
+import { PERMANENT_UPLOAD_DIR } from './constants/paths.js';
 
 const PORT = Number(getEnvVar('PORT', '3000'));
 
@@ -28,6 +29,7 @@ export const setupServer = () => {
     app.use(json());
 
     app.use(requestIdMiddleware);
+    app.use('uploads', express.static(PERMANENT_UPLOAD_DIR));
     app.use(contactsRouter);
     app.use(authRouter);
     app.use(errorHandler);

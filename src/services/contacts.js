@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors';
 import { ContactsBase } from '../models/initMongoDB.js';
 import { createPaginationMetadata } from '../utils/create-pagination-metadata.js';
+import { saveFile } from '../utils/save-file.js';
 
 export const getContacts = async ({page, perPage, sortOrder, sortBy, filters, }) => {
     const offset = (page - 1) * perPage;
@@ -60,7 +61,24 @@ export const updateContact = async (contactId, payload, userId, options) => {
         throw createHttpError(404, 'Contact not found');
     }
 
-    return {contact: result.value, isNew: !result.lastErrorObject.updatedExisting};
+    return { contact: result.value, isNew: !result.lastErrorObject.updatedExisting };
+};
+
+
+export const uploadContactsAvatar = async (contactId, file) => {
+    const url = await saveFile(file);
+
+    const contact = await ContactsBase.findByIdAndUpdate(
+        contactId,
+        {
+            photo: url,
+        },
+        {
+            new: true,
+        },
+    );
+
+    return contact;
 };
 
 export const deleteContactById = async (contactId, userId) => {

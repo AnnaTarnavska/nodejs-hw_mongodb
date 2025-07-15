@@ -1,5 +1,5 @@
 import createHttpError from 'http-errors';
-import { createContact, deleteContactById, getContactById, getContacts, updateContact } from '../services/contacts.js';
+import { createContact, deleteContactById, getContactById, getContacts, updateContact, uploadContactsAvatar } from '../services/contacts.js';
 import { parsePaginationParams, parseFilters, parseSortParams } from '../utils/parse-helpers.js';
 
 
@@ -64,6 +64,18 @@ export const patchContactByIdController = async (req, res) => {
         data: contact,
     });
 };
+
+export const uploadContactsAvatarController = async (req, res) => {
+    const { contactId } = req.params;
+    const contact = await uploadContactsAvatar(contactId, req.file);
+
+    return res.json({
+        message: `Successfully updated contact avatar with id ${contactId}`,
+        status: 200,
+        data: contact,
+    });
+};
+
 
 export const putContactController = async (req, res) => {
     const {contactId} = req.params;

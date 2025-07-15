@@ -2,7 +2,7 @@ import createHttpError from "http-errors";
 import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import Hqndlebars from 'handlebars';
+import Handlebars from 'handlebars';
 import { User } from '../models/User.js';
 import { Session } from '../models/Session.js';
 import { sendEmail } from "../utils/send-email.js";
@@ -97,7 +97,7 @@ export const refreshSession = async (sessionId, sessionToken) => {
 export const requestResetPwdEmail = async (email) => {
     const user = await User.findOne({ email });
     if (!user) {
-        throw createHttpError(401, 'Can`t reset password for this user!');
+        throw createHttpError(404, 'User not found!');
     }
 
     const token = jwt.sign({
@@ -105,10 +105,10 @@ export const requestResetPwdEmail = async (email) => {
         email: user.email,
     },
         getEnvVar('JWT_SECRET'),
-        {expiresIn: '15m'}
+        {expiresIn: '5m'}
     );
 
-    const template = Hqndlebars.compile(resetPwdTemplate);
+    const template = Handlebars.compile(resetPwdTemplate);
 
     const html = template({
         name: user.name,
@@ -125,7 +125,7 @@ export const resetPwd = async ({ token, password }) => {
         tokenPayload = jwt.verify(token, getEnvVar('JWT_SECRET'));
     } catch (err) {
         console.log(err);
-        throw createHttpError(401, 'JWT token expired or corrupted!');
+        throw createHttpError(401, 'Token is expired or invalid.');
     }
     const user = await User.findById(tokenPayload.sub);
     if (!user) {
