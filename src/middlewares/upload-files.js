@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now();
         cb(null,uniqueSuffix + '-' + file.originalname);
-    }
+    },
 });
 
 export const upload = multer({ storage });

@@ -40,7 +40,11 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const createContactsController = async (req, res) => {
-    const photoUrl = req.file?.path || null;
+    let photoUrl = null;
+
+    if (req.file) {
+        photoUrl = await saveFile(req.file);
+    }
 
     const contact = await createContact({
         ...req.body,
@@ -68,7 +72,7 @@ export const patchContactByIdController = async (req, res) => {
         updateData.photo = photoUrl;
     };
 
-    const { contact } = await updateContact(contactId, req.body, req.user._id,
+    const { contact } = await updateContact(contactId, updateData, req.user._id,
         {
             upsert: false,
         });

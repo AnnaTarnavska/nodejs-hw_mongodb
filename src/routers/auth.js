@@ -5,6 +5,7 @@ import { registerUserValidationSchema } from '../validation/register-validation-
 import { loginUserValidationSchema } from '../validation/login-validation-schema.js';
 import { ctrlWrapper } from "../utils/ctrlWrapper.js";
 import { requestResetPwdValidationSchema } from "../validation/request-reset-pwd-validation.js";
+import { resetPwdValidationSchema } from "../validation/reset-pwd-validation.js";
 
 const authRouter = Router();
 
@@ -15,6 +16,6 @@ authRouter.post('/auth/logout', ctrlWrapper(logoutUserController));
 
 
 authRouter.post('/auth/send-reset-email',validateBody(requestResetPwdValidationSchema), ctrlWrapper(requestResetPwdEmailController));
-authRouter.post('/auth/reset-pwd',validateBody(requestResetPwdValidationSchema), ctrlWrapper(resetPwdController));
+authRouter.post('/auth/reset-pwd',validateBody(resetPwdValidationSchema), ctrlWrapper(resetPwdController));
 
 export default authRouter;
