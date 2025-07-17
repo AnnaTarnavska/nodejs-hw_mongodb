@@ -19,11 +19,11 @@
   ],
   "tags": [
     {
-      "name": "contacts",
+      "name": "Contacts",
       "description": "Operations  about contacts"
     },
     {
-      "name": "auth",
+      "name": "Auth",
       "description": "Auth operations"
     }
   ],
