@@ -13,7 +13,7 @@ requestBody:
         required:
           - name
           - phoneNumber
-          - contactType
+          - email
         properties:
           name:
             description: 'Contact name'
@@ -24,7 +24,7 @@ requestBody:
             type: string
             example: '+384508783569'
           email:
-            description: 'Contact email (optional)'
+            description: 'Contact email'
             type: string
             example: 'anja.t0410@gmail.com'
           isFavourite:

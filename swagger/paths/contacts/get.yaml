@@ -31,32 +31,6 @@ parameters:
       enum: [asc, desc]
       example: asc
     description: Sort order
-  - in: query
-    name: name
-    schema:
-      type: string
-    description: Filter contacts by name (partial match)
-  - in: query
-    name: phoneNumber
-    schema:
-      type: string
-    description: Filter contacts by phone number (partial match)
-  - in: query
-    name: email
-    schema:
-      type: string
-    description: Filter contacts by email (partial match)
-  - in: query
-    name: isFavourite
-    schema:
-      type: boolean
-    description: Filter contacts by favourite status
-  - in: query
-    name: contactType
-    schema:
-      type: string
-      enum: [work, home, personal]
-    description: Filter contacts by contact type
 responses:
   '200':
     description: Successfully found contacts!
